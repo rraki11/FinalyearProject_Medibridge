@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doctor Dashboard - MediBridge</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- HEADER & NAVIGATION -->
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo">MEDIBRIDGE</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="doctor.html">Doctor</a></li>
+            <li><a href="patient.html">Me</a></li>
+            <li><a href="help.html">Help</a></li>
+          </ul>
+        </nav>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="signup.html" class="btn-signup">Signup</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <h1 class="section-title">Doctor Dashboard</h1>
+
+      <!-- DOCTOR PROFILE SECTION -->
+      <section class="section">
+        <div class="card">
+          <div class="card-header">My Profile</div>
+          <div id="doctorProfile"></div>
+        </div>
+      </section>
+
+      <!-- PATIENT REQUESTS SECTION -->
+      <section class="section">
+        <h2 class="section-title" style="margin-bottom: 2rem;">Patient Consultation Requests</h2>
+
+        <!-- TABS -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; border-bottom: 2px solid rgba(255, 255, 255, 0.1);">
+          <button
+            class="tab-btn active"
+            onclick="switchTab('pending')"
+            style="
+              padding: 1rem 1.5rem;
+              background: none;
+              border: none;
+              border-bottom: 3px solid transparent;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              letter-spacing: 0.3px;
+            "
+          >
+            Pending Requests
+          </button>
+          <button
+            class="tab-btn"
+            onclick="switchTab('accepted')"
+            style="
+              padding: 1rem 1.5rem;
+              background: none;
+              border: none;
+              border-bottom: 3px solid transparent;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              letter-spacing: 0.3px;
+            "
+          >
+            Accepted Requests
+          </button>
+        </div>
+
+        <!-- PENDING REQUESTS -->
+        <div id="pendingRequests">
+          <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+            No pending requests at the moment.
+          </p>
+        </div>
+
+        <!-- ACCEPTED REQUESTS -->
+        <div id="acceptedRequests" class="hidden">
+          <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+            No accepted requests yet.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 MediBridge. All Rights Reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+      // Check access
+      NavigationManager.checkAccess("doctor");
+
+      const currentUser = AuthManager.getCurrentUser();
+
+      // Display doctor profile
+      function loadDoctorProfile() {
+        const profileDiv = document.getElementById("doctorProfile");
+        profileDiv.innerHTML = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+              <p style="margin-bottom: 1.5rem;">
+                <strong style="color: #D1FAE5; letter-spacing: 0.3px;">Name:</strong>
+                <span style="color: rgba(255, 255, 255, 0.85); display: block; margin-top: 0.3rem; letter-spacing: 0.3px;">${currentUser.name}</span>
+              </p>
+              <p style="margin-bottom: 1.5rem;">
+                <strong style="color: #D1FAE5; letter-spacing: 0.3px;">Email:</strong>
+                <span style="color: rgba(255, 255, 255, 0.85); display: block; margin-top: 0.3rem; letter-spacing: 0.3px;">${currentUser.email}</span>
+              </p>
+              <p style="margin-bottom: 1.5rem;">
+                <strong style="color: #D1FAE5; letter-spacing: 0.3px;">Role:</strong>
+                <span style="color: #D1FAE5; font-weight: 700; text-transform: capitalize; display: block; margin-top: 0.3rem; letter-spacing: 0.3px;">
+                  ${currentUser.role}
+                </span>
+              </p>
+            </div>
+            <div style="background: rgba(45, 106, 79, 0.15); padding: 2rem; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+              <h4 style="color: #D1FAE5; margin-bottom: 1.5rem; font-weight: 700; letter-spacing: 0.3px;">Quick Stats</h4>
+              <p style="margin-bottom: 1rem; color: rgba(255, 255, 255, 0.85); letter-spacing: 0.3px;">
+                <strong>Total Consultations:</strong>
+                <span id="totalConsultations" style="float: right; font-weight: 700;">0</span>
+              </p>
+              <p style="margin-bottom: 1rem; color: rgba(255, 255, 255, 0.85); letter-spacing: 0.3px;">
+                <strong>Pending Requests:</strong>
+                <span id="pendingCount" style="float: right; font-weight: 700;">0</span>
+              </p>
+              <p style="color: rgba(255, 255, 255, 0.85); letter-spacing: 0.3px;">
+                <strong>Accepted Requests:</strong>
+                <span id="acceptedCount" style="float: right; font-weight: 700;">0</span>
+              </p>
+            </div>
+          </div>
+        `;
+      }
+
+      // Load consultations
+      function loadConsultations() {
+        const consultations =
+          JSON.parse(localStorage.getItem("medibridge_consultations")) || [];
+
+        // Update stats
+        document.getElementById("totalConsultations").textContent =
+          consultations.length;
+        document.getElementById("pendingCount").textContent = consultations.filter(
+          (c) => c.status === "Pending"
+        ).length;
+        document.getElementById("acceptedCount").textContent = consultations.filter(
+          (c) => c.status === "Accepted"
+        ).length;
+
+        // Pending requests
+        const pendingConsultations = consultations.filter(
+          (c) => c.status === "Pending"
+        );
+        const pendingDiv = document.getElementById("pendingRequests");
+
+        if (pendingConsultations.length === 0) {
+          pendingDiv.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No pending requests at the moment.
+            </p>
+          `;
+        } else {
+          let html = '<div class="table-container"><table>';
+          html += `
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Health Issue</th>
+                <th>Phone</th>
+                <th>Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+          `;
+
+          pendingConsultations.forEach((consultation) => {
+            html += `
+              <tr>
+                <td>${consultation.firstName} ${consultation.lastName}</td>
+                <td>${consultation.healthIssue}</td>
+                <td>${consultation.phone}</td>
+                <td>${consultation.createdAt}</td>
+                <td>
+                  <button
+                    class="btn btn-small btn-primary"
+                    onclick="acceptConsultation(${consultation.id})"
+                  >
+                    Accept
+                  </button>
+                </td>
+              </tr>
+            `;
+          });
+
+          html += `
+            </tbody>
+          </table></div>
+          `;
+
+          pendingDiv.innerHTML = html;
+        }
+
+        // Accepted requests
+        const acceptedConsultations = consultations.filter(
+          (c) => c.status === "Accepted"
+        );
+        const acceptedDiv = document.getElementById("acceptedRequests");
+
+        if (acceptedConsultations.length === 0) {
+          acceptedDiv.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No accepted requests yet.
+            </p>
+          `;
+        } else {
+          let html = '<div class="table-container"><table>';
+          html += `
+            <thead>
+              <tr>
+                <th>Patient Name</th>
+                <th>Health Issue</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+          `;
+
+          acceptedConsultations.forEach((consultation) => {
+            html += `
+              <tr>
+                <td>${consultation.firstName} ${consultation.lastName}</td>
+                <td>${consultation.healthIssue}</td>
+                <td>${consultation.phone}</td>
+                <td>${consultation.address}</td>
+                <td>${consultation.createdAt}</td>
+              </tr>
+            `;
+          });
+
+          html += `
+            </tbody>
+          </table></div>
+          `;
+
+          acceptedDiv.innerHTML = html;
+        }
+      }
+
+      // Switch tabs
+      function switchTab(tab) {
+        const pendingDiv = document.getElementById("pendingRequests");
+        const acceptedDiv = document.getElementById("acceptedRequests");
+        const tabBtns = document.querySelectorAll(".tab-btn");
+
+        if (tab === "pending") {
+          pendingDiv.classList.remove("hidden");
+          acceptedDiv.classList.add("hidden");
+          tabBtns[0].style.borderBottomColor = "#40916C";
+          tabBtns[0].style.color = "#FFFFFF";
+          tabBtns[1].style.borderBottomColor = "transparent";
+          tabBtns[1].style.color = "rgba(255, 255, 255, 0.7)";
+        } else {
+          pendingDiv.classList.add("hidden");
+          acceptedDiv.classList.remove("hidden");
+          tabBtns[0].style.borderBottomColor = "transparent";
+          tabBtns[0].style.color = "rgba(255, 255, 255, 0.7)";
+          tabBtns[1].style.borderBottomColor = "#40916C";
+          tabBtns[1].style.color = "#FFFFFF";
+        }
+      }
+
+      // Accept consultation
+      function acceptConsultation(consultationId) {
+        const confirmed = confirm(
+          "Are you sure you want to accept this consultation request?"
+        );
+
+        if (confirmed) {
+          ConsultationManager.updateStatus(consultationId, "Accepted");
+          alert("Consultation accepted successfully!");
+          loadConsultations();
+        }
+      }
+
+      // Load on page load
+      loadDoctorProfile();
+      loadConsultations();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help & Support - MediBridge</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- HEADER & NAVIGATION -->
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo">MEDIBRIDGE</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="doctor.html">Doctor</a></li>
+            <li><a href="patient.html">Me</a></li>
+            <li><a href="help.html">Help</a></li>
+          </ul>
+        </nav>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="signup.html" class="btn-signup">Signup</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <h1 class="section-title">Help & Support</h1>
+
+      <!-- HELP FORM SECTION -->
+      <section class="section">
+        <div class="card">
+          <div class="card-header">Submit Your Doubt or Query</div>
+
+          <form id="helpForm">
+            <div class="form-group">
+              <label for="helpName">Full Name</label>
+              <input
+                type="text"
+                id="helpName"
+                placeholder="Enter your full name"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="helpEmail">Email Address</label>
+              <input
+                type="email"
+                id="helpEmail"
+                placeholder="Enter your email address"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="helpAddress">Address</label>
+              <input
+                type="text"
+                id="helpAddress"
+                placeholder="Enter your address"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="helpDoubt">Your Doubt or Query</label>
+              <textarea
+                id="helpDoubt"
+                placeholder="Please describe your doubt or query in detail..."
+                required
+              ></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Submit Query
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- FAQ SECTION -->
+      <section class="section">
+        <h2 class="section-title" style="margin-bottom: 4rem;">Frequently Asked Questions</h2>
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 style="color: #D1FAE5; margin-bottom: 1.2rem; font-size: 1.15rem; letter-spacing: 0.3px; font-weight: 800;">
+              How do I create an account?
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.9; letter-spacing: 0.3px;">
+              Click on the "Signup" button in the navigation menu, select your role (Admin, Doctor, or Patient), fill in your details, and click "Create Account". You can then login with your credentials.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="color: #D1FAE5; margin-bottom: 1.2rem; font-size: 1.15rem; letter-spacing: 0.3px; font-weight: 800;">
+              How do I book a consultation?
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.9; letter-spacing: 0.3px;">
+              After logging in as a patient, go to the "Me" page, fill in your health details and select a health issue, then click "Submit Consultation Request". A doctor will review and accept your request.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="color: #D1FAE5; margin-bottom: 1.2rem; font-size: 1.15rem; letter-spacing: 0.3px; font-weight: 800;">
+              Is my data secure on MediBridge?
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.9; letter-spacing: 0.3px;">
+              Yes, we take data security seriously. Your personal and medical information is protected with industry-standard security measures and is never shared with third parties without your consent.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="color: #D1FAE5; margin-bottom: 1.2rem; font-size: 1.15rem; letter-spacing: 0.3px; font-weight: 800;">
+              Can I cancel a consultation?
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.9; letter-spacing: 0.3px;">
+              You can cancel pending consultation requests from your patient dashboard. Once a doctor accepts your request, please contact support for further assistance.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="color: #D1FAE5; margin-bottom: 1.2rem; font-size: 1.15rem; letter-spacing: 0.3px; font-weight: 800;">
+              How do doctors accept consultations?
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.9; letter-spacing: 0.3px;">
+              Doctors can view pending consultation requests on their dashboard. They can review patient details and click "Accept" to accept the consultation request.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3 style="color: #D1FAE5; margin-bottom: 1.2rem; font-size: 1.15rem; letter-spacing: 0.3px; font-weight: 800;">
+              What should I do if I forget my password?
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.85); line-height: 1.9; letter-spacing: 0.3px;">
+              Currently, you can submit a help request through this form with your issue. Our support team will assist you with password recovery.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT INFO SECTION -->
+      <section class="section">
+        <div class="card" style="background: linear-gradient(135deg, rgba(45, 106, 79, 0.15), rgba(64, 145, 108, 0.12)); padding: 4rem 3rem;">
+          <h2 style="color: #FFFFFF; margin-bottom: 3rem; font-size: 2rem; font-weight: 900; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);">
+            Contact Information
+          </h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem;">
+            <div>
+              <h4 style="color: #D1FAE5; margin-bottom: 1rem; font-weight: 800; letter-spacing: 0.3px; font-size: 1.1rem;">
+                📧 Email Support
+              </h4>
+              <p style="color: rgba(255, 255, 255, 0.85); letter-spacing: 0.3px; font-size: 1rem;">
+                support@medibridge.com
+              </p>
+            </div>
+            <div>
+              <h4 style="color: #D1FAE5; margin-bottom: 1rem; font-weight: 800; letter-spacing: 0.3px; font-size: 1.1rem;">
+                📞 Phone Support
+              </h4>
+              <p style="color: rgba(255, 255, 255, 0.85); letter-spacing: 0.3px; font-size: 1rem;">
+                +91 1800-MEDIBRIDGE
+              </p>
+            </div>
+            <div>
+              <h4 style="color: #D1FAE5; margin-bottom: 1rem; font-weight: 800; letter-spacing: 0.3px; font-size: 1.1rem;">
+                ⏰ Office Hours
+              </h4>
+              <p style="color: rgba(255, 255, 255, 0.85); letter-spacing: 0.3px; font-size: 1rem;">
+                Monday - Friday, 9:00 AM - 6:00 PM IST
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 MediBridge. All Rights Reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+      document.getElementById("helpForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("helpName").value.trim();
+        const email = document.getElementById("helpEmail").value.trim();
+        const address = document.getElementById("helpAddress").value.trim();
+        const doubt = document.getElementById("helpDoubt").value.trim();
+
+        // Validation
+        if (!name) {
+          FormValidator.showError("Please enter your name");
+          return;
+        }
+
+        if (!FormValidator.validateEmail(email)) {
+          FormValidator.showError("Please enter a valid email address");
+          return;
+        }
+
+        if (!address) {
+          FormValidator.showError("Please enter your address");
+          return;
+        }
+
+        if (!doubt || doubt.length < 10) {
+          FormValidator.showError("Please enter a detailed query (at least 10 characters)");
+          return;
+        }
+
+        // Submit help request
+        const request = HelpManager.submitRequest(name, email, address, doubt);
+
+        FormValidator.showSuccess(
+          "Your query has been submitted successfully! Our support team will contact you soon."
+        );
+
+        // Reset form
+        document.getElementById("helpForm").reset();
+      });
+    </script>
+  </body>
+</html>

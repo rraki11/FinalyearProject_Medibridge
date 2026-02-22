@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - MediBridge</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- HEADER & NAVIGATION -->
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo">MEDIBRIDGE</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="doctor.html">Doctor</a></li>
+            <li><a href="patient.html">Me</a></li>
+            <li><a href="help.html">Help</a></li>
+          </ul>
+        </nav>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="signup.html" class="btn-signup">Signup</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <h1 class="section-title">Admin Dashboard</h1>
+
+      <!-- STATS SECTION -->
+      <section class="section">
+        <div class="grid grid-4">
+          <div class="card text-center">
+            <h3 style="font-size: 3rem; color: #D1FAE5; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 0.5px;">
+              <span id="totalUsers">0</span>
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.8); font-weight: 700; letter-spacing: 0.3px;">Total Users</p>
+          </div>
+          <div class="card text-center">
+            <h3 style="font-size: 3rem; color: #D1FAE5; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 0.5px;">
+              <span id="totalDoctors">0</span>
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.8); font-weight: 700; letter-spacing: 0.3px;">Doctors</p>
+          </div>
+          <div class="card text-center">
+            <h3 style="font-size: 3rem; color: #D1FAE5; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 0.5px;">
+              <span id="totalConsultations">0</span>
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.8); font-weight: 700; letter-spacing: 0.3px;">Consultations</p>
+          </div>
+          <div class="card text-center">
+            <h3 style="font-size: 3rem; color: #D1FAE5; margin-bottom: 0.5rem; font-weight: 800; letter-spacing: 0.5px;">
+              <span id="totalHelpRequests">0</span>
+            </h3>
+            <p style="color: rgba(255, 255, 255, 0.8); font-weight: 700; letter-spacing: 0.3px;">Help Requests</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TABS -->
+      <section class="section">
+        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem; border-bottom: 2px solid rgba(255, 255, 255, 0.1); overflow-x: auto;">
+          <button
+            class="tab-btn active"
+            onclick="switchTab('users')"
+            style="
+              padding: 1rem 1.5rem;
+              background: none;
+              border: none;
+              border-bottom: 3px solid transparent;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              white-space: nowrap;
+              letter-spacing: 0.3px;
+            "
+          >
+            Registered Users
+          </button>
+          <button
+            class="tab-btn"
+            onclick="switchTab('doctors')"
+            style="
+              padding: 1rem 1.5rem;
+              background: none;
+              border: none;
+              border-bottom: 3px solid transparent;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              white-space: nowrap;
+              letter-spacing: 0.3px;
+            "
+          >
+            Doctor List
+          </button>
+          <button
+            class="tab-btn"
+            onclick="switchTab('consultations')"
+            style="
+              padding: 1rem 1.5rem;
+              background: none;
+              border: none;
+              border-bottom: 3px solid transparent;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              white-space: nowrap;
+              letter-spacing: 0.3px;
+            "
+          >
+            Consultation Records
+          </button>
+          <button
+            class="tab-btn"
+            onclick="switchTab('help')"
+            style="
+              padding: 1rem 1.5rem;
+              background: none;
+              border: none;
+              border-bottom: 3px solid transparent;
+              color: rgba(255, 255, 255, 0.7);
+              font-weight: 700;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              white-space: nowrap;
+              letter-spacing: 0.3px;
+            "
+          >
+            Help Requests
+          </button>
+        </div>
+
+        <!-- REGISTERED USERS TAB -->
+        <div id="usersTab">
+          <div id="usersContainer"></div>
+        </div>
+
+        <!-- DOCTORS TAB -->
+        <div id="doctorsTab" class="hidden">
+          <div id="doctorsContainer"></div>
+        </div>
+
+        <!-- CONSULTATIONS TAB -->
+        <div id="consultationsTab" class="hidden">
+          <div id="consultationsContainer"></div>
+        </div>
+
+        <!-- HELP REQUESTS TAB -->
+        <div id="helpTab" class="hidden">
+          <div id="helpContainer"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 MediBridge. All Rights Reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+      // Check access
+      NavigationManager.checkAccess("admin");
+
+      // Load dashboard data
+      function loadDashboard() {
+        const users = AuthManager.getAllUsers();
+        const consultations =
+          JSON.parse(localStorage.getItem("medibridge_consultations")) || [];
+        const helpRequests =
+          JSON.parse(localStorage.getItem("medibridge_help_requests")) || [];
+
+        const doctors = users.filter((u) => u.role === "doctor");
+
+        // Update stats
+        document.getElementById("totalUsers").textContent = users.length;
+        document.getElementById("totalDoctors").textContent = doctors.length;
+        document.getElementById("totalConsultations").textContent =
+          consultations.length;
+        document.getElementById("totalHelpRequests").textContent =
+          helpRequests.length;
+
+        // Load users table
+        loadUsersTable(users);
+
+        // Load doctors table
+        loadDoctorsTable(doctors);
+
+        // Load consultations table
+        loadConsultationsTable(consultations);
+
+        // Load help requests table
+        loadHelpRequestsTable(helpRequests);
+      }
+
+      function loadUsersTable(users) {
+        const container = document.getElementById("usersContainer");
+
+        if (users.length === 0) {
+          container.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No users registered yet.
+            </p>
+          `;
+          return;
+        }
+
+        let html = '<div class="table-container"><table>';
+        html += `
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+
+        users.forEach((user) => {
+          const roleBadge =
+            user.role === "admin"
+              ? '<span class="badge badge-success">Admin</span>'
+              : user.role === "doctor"
+              ? '<span class="badge badge-success">Doctor</span>'
+              : '<span class="badge badge-pending">Patient</span>';
+
+          const statusBadge = user.isBanned
+            ? '<span class="badge" style="background: rgba(239, 68, 68, 0.3); color: #FCA5A5;">Banned</span>'
+            : '<span class="badge badge-success">Active</span>';
+
+          const actionBtn = user.isBanned
+            ? '<button class="btn btn-small btn-primary" onclick="unbanUser(' + user.id + ')">Unban</button>'
+            : '<button class="btn btn-small btn-warning" onclick="banUser(' + user.id + ')">Ban</button>';
+
+          html += `
+            <tr>
+              <td>${user.id}</td>
+              <td>${user.name}</td>
+              <td>${user.email}</td>
+              <td>${roleBadge}</td>
+              <td>${statusBadge}</td>
+              <td>${user.createdAt}</td>
+              <td>
+                <div class="action-buttons">
+                  ${actionBtn}
+                  <button class="btn btn-small btn-danger" onclick="deleteUserConfirm(${user.id}, '${user.name}')">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `
+          </tbody>
+        </table></div>
+        `;
+
+        container.innerHTML = html;
+      }
+
+      function loadDoctorsTable(doctors) {
+        const container = document.getElementById("doctorsContainer");
+
+        if (doctors.length === 0) {
+          container.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No doctors registered yet.
+            </p>
+          `;
+          return;
+        }
+
+        let html = '<div class="table-container"><table>';
+        html += `
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Status</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+
+        doctors.forEach((doctor) => {
+          const statusBadge = doctor.isBanned
+            ? '<span class="badge" style="background: rgba(239, 68, 68, 0.3); color: #FCA5A5;">Banned</span>'
+            : '<span class="badge badge-success">Active</span>';
+
+          html += `
+            <tr>
+              <td>${doctor.id}</td>
+              <td>${doctor.name}</td>
+              <td>${doctor.email}</td>
+              <td>${statusBadge}</td>
+              <td>${doctor.createdAt}</td>
+            </tr>
+          `;
+        });
+
+        html += `
+          </tbody>
+        </table></div>
+        `;
+
+        container.innerHTML = html;
+      }
+
+      function loadConsultationsTable(consultations) {
+        const container = document.getElementById("consultationsContainer");
+
+        if (consultations.length === 0) {
+          container.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No consultation records yet.
+            </p>
+          `;
+          return;
+        }
+
+        let html = '<div class="table-container"><table>';
+        html += `
+          <thead>
+            <tr>
+              <th>Patient Name</th>
+              <th>Email</th>
+              <th>Health Issue</th>
+              <th>Doctor</th>
+              <th>Status</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+
+        consultations.forEach((consultation) => {
+          const statusBadge =
+            consultation.status === "Accepted"
+              ? '<span class="badge badge-success">Accepted</span>'
+              : '<span class="badge badge-pending">Pending</span>';
+
+          const doctorDisplay = consultation.doctor || "Not assigned";
+
+          html += `
+            <tr>
+              <td>${consultation.firstName} ${consultation.lastName}</td>
+              <td>${consultation.patientEmail}</td>
+              <td>${consultation.healthIssue}</td>
+              <td>${doctorDisplay}</td>
+              <td>${statusBadge}</td>
+              <td>${consultation.createdAt}</td>
+            </tr>
+          `;
+        });
+
+        html += `
+          </tbody>
+        </table></div>
+        `;
+
+        container.innerHTML = html;
+      }
+
+      function loadHelpRequestsTable(helpRequests) {
+        const container = document.getElementById("helpContainer");
+
+        if (helpRequests.length === 0) {
+          container.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No help requests yet.
+            </p>
+          `;
+          return;
+        }
+
+        let html = '<div class="table-container"><table>';
+        html += `
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Doubt</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+
+        helpRequests.forEach((request) => {
+          html += `
+            <tr>
+              <td>${request.name}</td>
+              <td>${request.email}</td>
+              <td>${request.address}</td>
+              <td>${request.doubt.substring(0, 50)}...</td>
+              <td>${request.submittedAt}</td>
+            </tr>
+          `;
+        });
+
+        html += `
+          </tbody>
+        </table></div>
+        `;
+
+        container.innerHTML = html;
+      }
+
+      function switchTab(tab) {
+        const tabs = [
+          "usersTab",
+          "doctorsTab",
+          "consultationsTab",
+          "helpTab",
+        ];
+        const tabBtns = document.querySelectorAll(".tab-btn");
+
+        // Hide all tabs
+        tabs.forEach((t) => {
+          document.getElementById(t).classList.add("hidden");
+        });
+
+        // Reset all buttons
+        tabBtns.forEach((btn) => {
+          btn.style.borderBottomColor = "transparent";
+          btn.style.color = "rgba(255, 255, 255, 0.7)";
+        });
+
+        // Show selected tab
+        if (tab === "users") {
+          document.getElementById("usersTab").classList.remove("hidden");
+          tabBtns[0].style.borderBottomColor = "#40916C";
+          tabBtns[0].style.color = "#FFFFFF";
+        } else if (tab === "doctors") {
+          document.getElementById("doctorsTab").classList.remove("hidden");
+          tabBtns[1].style.borderBottomColor = "#40916C";
+          tabBtns[1].style.color = "#FFFFFF";
+        } else if (tab === "consultations") {
+          document.getElementById("consultationsTab").classList.remove("hidden");
+          tabBtns[2].style.borderBottomColor = "#40916C";
+          tabBtns[2].style.color = "#FFFFFF";
+        } else if (tab === "help") {
+          document.getElementById("helpTab").classList.remove("hidden");
+          tabBtns[3].style.borderBottomColor = "#40916C";
+          tabBtns[3].style.color = "#FFFFFF";
+        }
+      }
+
+      // ============================================
+      // USER MANAGEMENT FUNCTIONS
+      // ============================================
+
+      function banUser(userId) {
+        const confirmed = confirm("Are you sure you want to ban this user? They will not be able to login.");
+        if (confirmed) {
+          AuthManager.banUser(userId);
+          alert("User has been banned successfully!");
+          loadDashboard();
+        }
+      }
+
+      function unbanUser(userId) {
+        const confirmed = confirm("Are you sure you want to unban this user?");
+        if (confirmed) {
+          AuthManager.unbanUser(userId);
+          alert("User has been unbanned successfully!");
+          loadDashboard();
+        }
+      }
+
+      function deleteUserConfirm(userId, userName) {
+        const confirmed = confirm("Are you sure you want to permanently delete " + userName + "? This action cannot be undone.");
+        if (confirmed) {
+          AuthManager.deleteUser(userId);
+          alert("User has been deleted successfully!");
+          loadDashboard();
+        }
+      }
+
+      // Load dashboard on page load
+      loadDashboard();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Dashboard - MediBridge</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- HEADER & NAVIGATION -->
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo">MEDIBRIDGE</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="doctor.html">Doctor</a></li>
+            <li><a href="patient.html">Me</a></li>
+            <li><a href="help.html">Help</a></li>
+          </ul>
+        </nav>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="signup.html" class="btn-signup">Signup</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <h1 class="section-title">Patient Dashboard</h1>
+
+      <!-- CONSULTATION REQUEST FORM -->
+      <section class="section">
+        <div class="card">
+          <div class="card-header">Request a Consultation</div>
+
+          <form id="consultationForm">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  placeholder="Enter first name"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  placeholder="Enter last name"
+                  required
+                />
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+              <div class="form-group">
+                <label for="age">Age</label>
+                <input
+                  type="number"
+                  id="age"
+                  placeholder="Enter your age"
+                  min="1"
+                  max="120"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="gender">Gender</label>
+                <div class="custom-select">
+                  <select id="gender" required>
+                    <option value="">-- Select gender --</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  placeholder="Enter phone number (10 digits)"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input
+                  type="text"
+                  id="address"
+                  placeholder="Enter your address"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="healthIssue">Health Issue</label>
+              <div class="custom-select">
+                <select id="healthIssue" required>
+                  <option value="">-- Select health issue --</option>
+                  <option value="fever">Fever</option>
+                  <option value="cold">Cold</option>
+                  <option value="skin-disease">Skin Disease</option>
+                  <option value="headache">Headache</option>
+                  <option value="stomach-pain">Stomach Pain</option>
+                  <option value="allergy">Allergy</option>
+                  <option value="body-pain">Body Pain</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="imageUpload">Upload Medical Image (Optional)</label>
+              <input
+                type="file"
+                id="imageUpload"
+                accept="image/*"
+              />
+              <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem; letter-spacing: 0.2px;">
+                Supported formats: JPG, PNG, GIF (Max 5MB)
+              </p>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">
+              Submit Consultation Request
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- AVAILABLE DOCTORS SECTION -->
+      <section class="section">
+        <h2 class="section-title" style="margin-bottom: 1.5rem;">Available Doctors</h2>
+        <p class="section-subtitle" style="margin-bottom: 3rem;">Click a doctor to assign them to your consultation</p>
+        <div class="grid grid-4" id="patientDoctorsGrid"></div>
+      </section>
+
+      <!-- MY CONSULTATIONS SECTION -->
+      <section class="section">
+        <h2 class="section-title" style="margin-bottom: 2rem;">My Consultations</h2>
+        <div id="consultationsContainer">
+          <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+            No consultations yet. Submit a request above to get started.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- EDIT MODAL -->
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Consultation</h2>
+          <button class="modal-close" onclick="closeEditModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="editForm">
+            <div class="form-group">
+              <label for="editFirstName">First Name</label>
+              <input type="text" id="editFirstName" required />
+            </div>
+
+            <div class="form-group">
+              <label for="editLastName">Last Name</label>
+              <input type="text" id="editLastName" required />
+            </div>
+
+            <div class="form-group">
+              <label for="editAge">Age</label>
+              <input type="number" id="editAge" min="1" max="120" required />
+            </div>
+
+            <div class="form-group">
+              <label for="editGender">Gender</label>
+              <div class="custom-select">
+                <select id="editGender" required>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editPhone">Phone Number</label>
+              <input type="tel" id="editPhone" required />
+            </div>
+
+            <div class="form-group">
+              <label for="editAddress">Address</label>
+              <input type="text" id="editAddress" required />
+            </div>
+
+            <div class="form-group">
+              <label for="editHealthIssue">Health Issue</label>
+              <div class="custom-select">
+                <select id="editHealthIssue" required>
+                  <option value="fever">Fever</option>
+                  <option value="cold">Cold</option>
+                  <option value="skin-disease">Skin Disease</option>
+                  <option value="headache">Headache</option>
+                  <option value="stomach-pain">Stomach Pain</option>
+                  <option value="allergy">Allergy</option>
+                  <option value="body-pain">Body Pain</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editDoctor">Assigned Doctor</label>
+              <div class="custom-select">
+                <select id="editDoctor">
+                  <option value="">-- Not assigned --</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="editFile">Upload/Replace Medical File</label>
+              <input type="file" id="editFile" accept="image/*,.pdf,.doc,.docx" />
+              <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-top: 0.5rem; letter-spacing: 0.2px;">
+                Current file: <span id="currentFileName">None</span>
+              </p>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="saveEditedConsultation()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 MediBridge. All Rights Reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+      // Check access
+      NavigationManager.checkAccess("patient");
+
+      // ============================================
+      // DOCTOR SELECTION FOR NEW CONSULTATION
+      // ============================================
+
+      let selectedDoctorForNewConsultation = null;
+
+      function selectDoctorForNewConsultation(doctorName) {
+        selectedDoctorForNewConsultation = doctorName;
+        
+        // Update visual state of all doctor cards
+        const cards = document.querySelectorAll("#patientDoctorsGrid .doctor-card");
+        cards.forEach((card) => {
+          const cardDoctorName = card.querySelector(".doctor-name").textContent;
+          if (cardDoctorName === doctorName) {
+            card.classList.add("selected");
+          } else {
+            card.classList.remove("selected");
+          }
+        });
+
+        FormValidator.showSuccess("Dr. " + doctorName + " selected for your consultation!");
+      }
+
+      // ============================================
+      // EDIT MODAL MANAGEMENT
+      // ============================================
+
+      let currentEditingConsultationId = null;
+
+      function openEditModal(consultationId) {
+        currentEditingConsultationId = consultationId;
+        const consultation = ConsultationManager.getConsultationById(consultationId);
+
+        if (!consultation) {
+          alert("Consultation not found");
+          return;
+        }
+
+        // Populate form with consultation data
+        document.getElementById("editFirstName").value = consultation.firstName;
+        document.getElementById("editLastName").value = consultation.lastName;
+        document.getElementById("editAge").value = consultation.age;
+        document.getElementById("editGender").value = consultation.gender;
+        document.getElementById("editPhone").value = consultation.phone;
+        document.getElementById("editAddress").value = consultation.address;
+        document.getElementById("editHealthIssue").value = consultation.healthIssue;
+        document.getElementById("editDoctor").value = consultation.doctor || "";
+
+        // Populate doctor dropdown
+        const doctorSelect = document.getElementById("editDoctor");
+        doctorSelect.innerHTML = '<option value="">-- Not assigned --</option>';
+        getDoctorsList().forEach((doctor) => {
+          const option = document.createElement("option");
+          option.value = doctor.name;
+          option.textContent = doctor.name;
+          doctorSelect.appendChild(option);
+        });
+        doctorSelect.value = consultation.doctor || "";
+
+        // Show current file
+        const fileData = FileManager.getFile(consultationId);
+        const currentFileSpan = document.getElementById("currentFileName");
+        if (fileData) {
+          currentFileSpan.textContent = fileData.name + " (" + (fileData.size / 1024).toFixed(2) + " KB)";
+        } else {
+          currentFileSpan.textContent = "None";
+        }
+
+        // Show modal
+        document.getElementById("editModal").classList.add("active");
+      }
+
+      function closeEditModal() {
+        document.getElementById("editModal").classList.remove("active");
+        currentEditingConsultationId = null;
+        document.getElementById("editFile").value = "";
+      }
+
+      function saveEditedConsultation() {
+        if (!currentEditingConsultationId) return;
+
+        const updatedData = {
+          firstName: document.getElementById("editFirstName").value,
+          lastName: document.getElementById("editLastName").value,
+          age: parseInt(document.getElementById("editAge").value),
+          gender: document.getElementById("editGender").value,
+          phone: document.getElementById("editPhone").value,
+          address: document.getElementById("editAddress").value,
+          healthIssue: document.getElementById("editHealthIssue").value,
+          doctor: document.getElementById("editDoctor").value || null,
+        };
+
+        // Validate
+        if (!updatedData.firstName || !updatedData.lastName) {
+          FormValidator.showError("Please enter your full name");
+          return;
+        }
+
+        if (!FormValidator.validatePhone(updatedData.phone)) {
+          FormValidator.showError("Please enter a valid 10-digit phone number");
+          return;
+        }
+
+        // Handle file upload if present
+        const fileInput = document.getElementById("editFile");
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          FileManager.storeFile(currentEditingConsultationId, file).then(() => {
+            completeConsultationUpdate(updatedData);
+          });
+        } else {
+          completeConsultationUpdate(updatedData);
+        }
+      }
+
+      function completeConsultationUpdate(updatedData) {
+        // Update consultation
+        const result = ConsultationManager.updateConsultation(
+          currentEditingConsultationId,
+          updatedData
+        );
+
+        if (result) {
+          FormValidator.showSuccess("Consultation updated successfully!");
+          closeEditModal();
+          loadConsultations();
+        } else {
+          FormValidator.showError("Failed to update consultation");
+        }
+      }
+
+      // ============================================
+      // DELETE CONFIRMATION
+      // ============================================
+
+      function confirmDeleteConsultation(consultationId) {
+        const confirmed = confirm(
+          "Are you sure you want to remove this patient from the list? This action cannot be undone."
+        );
+
+        if (confirmed) {
+          deleteConsultation(consultationId);
+        }
+      }
+
+      function deleteConsultation(consultationId) {
+        const result = ConsultationManager.deleteConsultation(consultationId);
+
+        if (result) {
+          FormValidator.showSuccess("Consultation deleted successfully!");
+          loadConsultations();
+        } else {
+          FormValidator.showError("Failed to delete consultation");
+        }
+      }
+
+      // ============================================
+      // DOCTOR SELECTION MANAGEMENT (ISOLATED PER RECORD)
+      // ============================================
+
+      function selectDoctorForConsultation(consultationId, doctorName) {
+        const consultation = ConsultationManager.getConsultationById(consultationId);
+
+        if (consultation) {
+          // Update only this specific consultation record
+          ConsultationManager.updateConsultation(consultationId, {
+            doctor: doctorName,
+          });
+
+          // Reload consultations to reflect the change
+          loadConsultations();
+
+          FormValidator.showSuccess("Dr. " + doctorName + " assigned to this consultation!");
+        }
+      }
+
+      // ============================================
+      // FILE MANAGEMENT
+      // ============================================
+
+      function downloadFile(consultationId) {
+        FileManager.downloadFile(consultationId);
+      }
+
+      // Render doctors for patient
+      function renderPatientDoctors() {
+        const grid = document.getElementById("patientDoctorsGrid");
+        const doctors = getDoctorsList();
+
+        grid.innerHTML = doctors
+          .map((doctor) => {
+            return '<div class="doctor-card" onclick="selectDoctorForNewConsultation(\'' + doctor.name + '\')" style="cursor: pointer;"><div class="doctor-name">' + doctor.name + '</div><div class="doctor-specialty">' + doctor.specialty + '</div><div class="doctor-rating">' + generateStarRating(doctor.rating) + '</div><div class="doctor-rating-text">(' + doctor.rating.toFixed(1) + '/5)</div></div>';
+          })
+          .join("");
+      }
+
+      // Load consultations
+      function loadConsultations() {
+        const user = AuthManager.getCurrentUser();
+        const consultations =
+          JSON.parse(localStorage.getItem("medibridge_consultations")) || [];
+        const userConsultations = consultations.filter(
+          (c) => c.patientId === user.id
+        );
+        const container = document.getElementById("consultationsContainer");
+
+        if (userConsultations.length === 0) {
+          container.innerHTML = `
+            <p style="text-align: center; color: rgba(255, 255, 255, 0.6); padding: 2rem; letter-spacing: 0.3px;">
+              No consultations yet. Submit a request above to get started.
+            </p>
+          `;
+          return;
+        }
+
+        let html = '<div class="table-container"><table>';
+        html += `
+          <thead>
+            <tr>
+              <th>Health Issue</th>
+              <th>Doctor</th>
+              <th>Status</th>
+              <th>File</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+
+        userConsultations.forEach((consultation) => {
+          const statusBadge =
+            consultation.status === "Accepted"
+              ? '<span class="badge badge-success">Accepted</span>'
+              : '<span class="badge badge-pending">Pending</span>';
+
+          const doctorDisplay = consultation.doctor || "Not assigned";
+          
+          const fileData = FileManager.getFile(consultation.id);
+          const fileDisplay = fileData 
+            ? '<button class="btn btn-small btn-primary" onclick="downloadFile(' + consultation.id + ')">Download</button>'
+            : '<span style="color: rgba(255, 255, 255, 0.5);">No file</span>';
+
+          html += `
+            <tr>
+              <td>${consultation.healthIssue}</td>
+              <td>${doctorDisplay}</td>
+              <td>${statusBadge}</td>
+              <td>${fileDisplay}</td>
+              <td>${consultation.createdAt}</td>
+              <td>
+                <div class="action-buttons">
+                  <button class="btn btn-small btn-primary" onclick="openEditModal(${consultation.id})">Edit</button>
+                  <button class="btn btn-small btn-danger" onclick="confirmDeleteConsultation(${consultation.id})">Delete</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `
+          </tbody>
+        </table></div>
+        `;
+
+        container.innerHTML = html;
+      }
+
+      // Handle form submission
+      document
+        .getElementById("consultationForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const firstName = document.getElementById("firstName").value.trim();
+          const lastName = document.getElementById("lastName").value.trim();
+          const age = document.getElementById("age").value;
+          const gender = document.getElementById("gender").value;
+          const phone = document.getElementById("phone").value.trim();
+          const address = document.getElementById("address").value.trim();
+          const healthIssue = document.getElementById("healthIssue").value;
+          const fileInput = document.getElementById("imageUpload");
+
+          // Validation
+          if (!firstName || !lastName) {
+            FormValidator.showError("Please enter your full name");
+            return;
+          }
+
+          if (!age || age < 1 || age > 120) {
+            FormValidator.showError("Please enter a valid age");
+            return;
+          }
+
+          if (!gender) {
+            FormValidator.showError("Please select your gender");
+            return;
+          }
+
+          if (!FormValidator.validatePhone(phone)) {
+            FormValidator.showError("Please enter a valid 10-digit phone number");
+            return;
+          }
+
+          if (!address) {
+            FormValidator.showError("Please enter your address");
+            return;
+          }
+
+          if (!healthIssue) {
+            FormValidator.showError("Please select a health issue");
+            return;
+          }
+
+          // Add consultation with selected doctor
+          const consultation = ConsultationManager.addConsultation({
+            firstName,
+            lastName,
+            age,
+            gender,
+            phone,
+            address,
+            healthIssue,
+            doctor: selectedDoctorForNewConsultation,
+          });
+
+          // Store file if uploaded
+          if (fileInput.files.length > 0) {
+            await FileManager.storeFile(consultation.id, fileInput.files[0]);
+          }
+
+          FormValidator.showSuccess("Consultation request submitted successfully!");
+
+          // Reset form and selection
+          document.getElementById("consultationForm").reset();
+          selectedDoctorForNewConsultation = null;
+          
+          // Clear doctor card selection
+          document.querySelectorAll("#patientDoctorsGrid .doctor-card").forEach((card) => {
+            card.classList.remove("selected");
+          });
+
+          // Reload consultations
+          setTimeout(() => {
+            loadConsultations();
+          }, 1000);
+        });
+
+      // Load on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        renderPatientDoctors();
+        loadConsultations();
+      });
+
+      // Close modal when clicking outside
+      document.getElementById("editModal").addEventListener("click", function (e) {
+        if (e.target === this) {
+          closeEditModal();
+        }
+      });
+    </script>
+  </body>
+</html>

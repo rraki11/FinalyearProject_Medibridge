@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - MediBridge</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- HEADER & NAVIGATION -->
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo">MEDIBRIDGE</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="doctor.html">Doctor</a></li>
+            <li><a href="patient.html">Me</a></li>
+            <li><a href="help.html">Help</a></li>
+          </ul>
+        </nav>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="signup.html" class="btn-signup">Signup</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 200px);">
+      <div class="card" style="max-width: 500px; width: 100%;">
+        <div class="card-header text-center">Create Your Account</div>
+
+        <form id="signupForm">
+          <div class="form-group">
+            <label for="role">Select Your Role</label>
+            <div class="custom-select">
+              <select id="role" required>
+                <option value="">-- Choose a role --</option>
+                <option value="admin">Admin</option>
+                <option value="doctor">Doctor</option>
+                <option value="patient">Patient</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input
+              type="text"
+              id="name"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter password (min 6 characters)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            Create Account
+          </button>
+        </form>
+
+        <p style="text-align: center; margin-top: 2rem; color: rgba(255, 255, 255, 0.8); letter-spacing: 0.3px;">
+          Already have an account?
+          <a href="login.html" style="color: #D1FAE5; font-weight: 700; text-decoration: none; transition: all 0.3s ease;">
+            Login here
+          </a>
+        </p>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 MediBridge. All Rights Reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+      document.getElementById("signupForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const role = document.getElementById("role").value;
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        // Validation
+        if (!role) {
+          FormValidator.showError("Please select a role");
+          return;
+        }
+
+        if (!name) {
+          FormValidator.showError("Please enter your name");
+          return;
+        }
+
+        if (!FormValidator.validateEmail(email)) {
+          FormValidator.showError("Please enter a valid email address");
+          return;
+        }
+
+        if (!FormValidator.validatePassword(password)) {
+          FormValidator.showError("Password must be at least 6 characters");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          FormValidator.showError("Passwords do not match");
+          return;
+        }
+
+        // Register user
+        const result = AuthManager.register(name, email, password, role);
+
+        if (result.success) {
+          FormValidator.showSuccess(
+            "Registration successful! Redirecting to login..."
+          );
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1500);
+        } else {
+          FormValidator.showError(result.message);
+        }
+      });
+    </script>
+  </body>
+</html>

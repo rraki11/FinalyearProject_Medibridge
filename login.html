@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - MediBridge</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- HEADER & NAVIGATION -->
+    <header>
+      <div class="header-container">
+        <a href="index.html" class="logo">MEDIBRIDGE</a>
+        <nav>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="doctor.html">Doctor</a></li>
+            <li><a href="patient.html">Me</a></li>
+            <li><a href="help.html">Help</a></li>
+          </ul>
+        </nav>
+        <div class="nav-buttons">
+          <a href="login.html" class="btn-login">Login</a>
+          <a href="signup.html" class="btn-signup">Signup</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main style="display: flex; justify-content: center; align-items: center; min-height: calc(100vh - 200px);">
+      <div class="card" style="max-width: 500px; width: 100%;">
+        <div class="card-header text-center">Welcome Back</div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="role">Select Your Role</label>
+            <div class="custom-select">
+              <select id="role" required>
+                <option value="">-- Choose your role --</option>
+                <option value="admin">Admin</option>
+                <option value="doctor">Doctor</option>
+                <option value="patient">Patient</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            Login
+          </button>
+        </form>
+
+        <div class="alert alert-warning" style="margin-top: 2rem; font-size: 0.9rem;">
+          <strong style="color: #D1FAE5;">Demo Credentials:</strong>
+          <br style="margin: 0.5rem 0;" />
+          <span style="color: rgba(255, 255, 255, 0.85);">
+            Admin: admin@medibridge.com / admin123
+            <br />
+            Doctor: shubh@medibridge.com / doctor123
+            <br />
+            Patient: patient@medibridge.com / patient123
+          </span>
+        </div>
+
+        <p style="text-align: center; margin-top: 2rem; color: rgba(255, 255, 255, 0.8); letter-spacing: 0.3px;">
+          Don't have an account?
+          <a href="signup.html" style="color: #D1FAE5; font-weight: 700; text-decoration: none; transition: all 0.3s ease;">
+            Sign up here
+          </a>
+        </p>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>&copy; 2026 MediBridge. All Rights Reserved.</p>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+      document.getElementById("loginForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const role = document.getElementById("role").value;
+
+        // Validation
+        if (!email) {
+          FormValidator.showError("Please enter your email");
+          return;
+        }
+
+        if (!password) {
+          FormValidator.showError("Please enter your password");
+          return;
+        }
+
+        if (!role) {
+          FormValidator.showError("Please select your role");
+          return;
+        }
+
+        // Login user
+        const result = AuthManager.login(email, password, role);
+
+        if (result.success) {
+          FormValidator.showSuccess("Login successful! Redirecting...");
+          setTimeout(() => {
+            // Redirect based on role
+            if (role === "admin") {
+              window.location.href = "admin.html";
+            } else if (role === "doctor") {
+              window.location.href = "doctor.html";
+            } else if (role === "patient") {
+              window.location.href = "patient.html";
+            }
+          }, 1000);
+        } else {
+          FormValidator.showError(result.message);
+        }
+      });
+    </script>
+  </body>
+</html>
