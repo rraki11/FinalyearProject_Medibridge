@@ -1,6 +1,4 @@
-_This document was authored by Manus, an autonomous AI agent._
-
-# MediBridge – Premium Dark Glassmorphism Healthcare Web App (UI Refinement & Cursor Enhancement)
+# MediBridge
 
 ## Project Overview
 
