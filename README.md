@@ -85,13 +85,13 @@ Open index.html in your browser
 🧪 Demo Credentials
 
 Admin
-Email: admin@medibridge.com
-Password: admin123
+Email: demo_admin@local.test
+Password: demo123
 
 Doctor
-Email: shubh@medibridge.com
-Password: doctor123
+Email: demo_doctor@local.test
+Password: demo456
 
 Patient
-Email: patient@medibridge.com
-Password: patient123
+Email: demo_patient@local.test
+Password: demo789
