@@ -64,8 +64,7 @@ The project is organized into a clear and maintainable folder structure:
 
 To run the MediBridge project, follow these simple steps:
 
-1.  **Extract the Project**: Unzip the `MediBridge_Project.zip` file to a location of your choice on your computer.
-2.  **Navigate to the Folder**: Open the extracted `MediBridge` folder.
+1.  **Navigate to the Folder**: Open the `MediBridge` folder.
 3.  **Run the Batch File**:
     -   **On Windows**: Simply double-click the `run_medibridge.bat` file. This will automatically open the `index.html` file in your default web browser.
     -   **On other Operating Systems (macOS, Linux)**: Open the `index.html` file directly in your web browser (e.g., Chrome, Firefox, Safari).
