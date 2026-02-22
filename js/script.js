@@ -81,9 +81,30 @@ const CursorGlow = {
 
 const AuthManager = {
   init() {
+    
     // Initialize users if not exists
     if (!localStorage.getItem("medibridge_users")) {
-      localStorage.setItem("medibridge_users", JSON.stringify([]));
+      const defaultUsers = [
+    {
+      name: "Admin",
+      email: "admin@medibridge.com",
+      password: "admin123",
+      role: "admin"
+    },
+    {
+      name: "Doctor",
+      email: "shubh@medibridge.com",
+      password: "doctor123",
+      role: "doctor"
+    },
+    {
+      name: "Patient",
+      email: "patient@medibridge.com",
+      password: "patient123",
+      role: "patient"
+    }
+  ];
+      localStorage.setItem("medibridge_users", JSON.stringify(defaultUsers));
     }
   },
 
