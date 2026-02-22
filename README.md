@@ -1,4 +1,5 @@
 🏥 MediBridge
+
 📌 Project Overview
 
 MediBridge is a front-end web application developed as an academic project.
@@ -20,20 +21,24 @@ All data is stored in the browser using localStorage to simulate backend functio
 🔐 Authentication
 
 User Sign Up
+
 Login
 Logout
 Role-based access control
 
 👤 Patient Dashboard
+
 Submit personal & medical details
 Request consultations
 View consultation status
 
 🩺 Doctor Dashboard
+
 View assigned consultations
 Accept patient requests
 
 🛠 Admin Dashboard
+
 View all users
 View all consultation records
 Manage help requests
@@ -45,6 +50,7 @@ Custom styled dropdowns
 Smooth interactive effects
 
 🧠 Technical Implementation
+
 Feature	Implementation
 Data Storage	Browser localStorage
 Authentication	JavaScript logic
@@ -53,6 +59,7 @@ UI Styling	CSS (Dark Theme + Glass Effects)
 Structure	Multiple HTML pages
 
 📁 Project Structure
+
 css/
  └── style.css
 js/
@@ -69,12 +76,14 @@ README.md
 run_medibridge.bat
 
 ▶️ How to Run
+
 Windows
 Double-click run_medibridge.bat
 macOS / Linux
 Open index.html in your browser
 
 🧪 Demo Credentials
+
 Admin
 Email: admin@medibridge.com
 Password: admin123
